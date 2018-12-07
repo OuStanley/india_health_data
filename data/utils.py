@@ -1,9 +1,11 @@
 import pandas as pd
+import os
 
 ### Reads in the file given the year, district name, and subdistrict name 
 
 def read_file(year, state_name, district_name):
-    return  (pd.read_html('/Users/stanleyou/india_health_data/data/' + str(year) + '/MonthUpToDecember/' + state_name + '/' +    district_name + '/All.xls')[0])
+    
+    return (pd.read_html('/Users/stanleyou/india_health_data/data/' + str(year) + '/MonthUpToDecember/' + state_name + '/' +    district_name + '/All.xls')[0])
 
 ### Cleans the necessary tables 
 def clean_table(df, state_name, district_name, year):
@@ -39,3 +41,22 @@ def append_sub_district(district, sub_district):
     df = pd.concat(total_years)
     return df
     
+    
+def fix_column_order(df):
+    cols = df.columns.tolist()
+    cols.insert(0, cols.pop(cols.index('Year')))
+    cols.insert(0, cols.pop(cols.index('District Name')))
+    cols.insert(0, cols.pop(cols.index('State Name')))
+    
+    df = df.reindex(columns= cols)
+    return df
+
+def create_state_csv(state_name):
+    district_names = []
+    path = '/Users/stanleyou/india_health_data/data/2012/MonthUpToDecember/' + state_name
+    files = os.listdir(path)
+    for i in files:
+        district_names.append(append_sub_district(state_name, i))
+    state = pd.concat(district_names)
+    state = fix_column_order(state)
+    state.to_csv('/Users/stanleyou/india_health_data/state_csv/' + state_name + '.csv')
