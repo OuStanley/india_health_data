@@ -5,7 +5,7 @@ import os
 
 def read_file(year, state_name, district_name):
     
-    return (pd.read_html('/Users/stanleyou/india_health_data/data/' + str(year) + '/MonthUpToDecember/' + state_name + '/' +    district_name + '/All.xls')[0])
+    return (pd.read_html('/Users/stanleyou/india_health_data/data/' + str(year) + '/MonthUpToMarch/' + state_name + '/' +    district_name + '/All.xls')[0])
 
 ### Cleans the necessary tables 
 def clean_table(df, state_name, district_name, year):
@@ -53,7 +53,7 @@ def fix_column_order(df):
 
 def create_state_csv(state_name):
     district_names = []
-    path = '/Users/stanleyou/india_health_data/data/2012/MonthUpToDecember/' + state_name
+    path = '/Users/stanleyou/india_health_data/data/2012/MonthUpToMarch/' + state_name
     files = os.listdir(path)
     for i in files:
         district_names.append(append_sub_district(state_name, i))
