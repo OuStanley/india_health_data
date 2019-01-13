@@ -60,3 +60,14 @@ def create_state_csv(state_name):
     state = pd.concat(district_names)
     state = fix_column_order(state)
     state.to_csv('/Users/stanleyou/india_health_data/state_csv/' + state_name + '.csv')
+    
+
+def create_state_csv_2013(state_name):
+    district_names = []
+    path = '/Users/stanleyou/india_health_data/data/2013/MonthUpToMarch/' + state_name
+    files = os.listdir(path)
+    for i in files:
+        district_names.append(append_sub_district(state_name, i))
+    state = pd.concat(district_names)
+    state = fix_column_order(state)
+    state.to_csv('/Users/stanleyou/india_health_data/state_csv/' + state_name + '.csv')
