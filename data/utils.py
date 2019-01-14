@@ -10,7 +10,6 @@ def read_file(year, state_name, district_name):
 ### Cleans the necessary tables 
 def clean_table(df, state_name, district_name, year):
     df.columns = df.columns.get_level_values(1)
-
     df = (df
  .rename(columns={'Number of Pregnant women registered within first trimester':'Subdistrict Name'})
  .set_index('Subdistrict Name')
@@ -54,6 +53,16 @@ def fix_column_order(df):
 def create_state_csv(state_name):
     district_names = []
     path = '/Users/stanleyou/india_health_data/data/2012/MonthUpToMarch/' + state_name
+    files = os.listdir(path)
+    for i in files:
+        district_names.append(append_sub_district(state_name, i))
+    state = pd.concat(district_names)
+    state = fix_column_order(state)
+    state.to_csv('/Users/stanleyou/india_health_data/state_csv/' + state_name + '.csv')
+    
+def create_state_csv_december(state_name):
+    district_names = []
+    path = '/Users/stanleyou/india_health_data/data/2012/MonthUpToDecember/' + state_name
     files = os.listdir(path)
     for i in files:
         district_names.append(append_sub_district(state_name, i))
